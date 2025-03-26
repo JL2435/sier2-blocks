@@ -34,6 +34,7 @@ module = [
     "param",
     "geoviews",
     "xlsxwriter",
+    "Faker",
 ]
 ignore_missing_imports = true
 

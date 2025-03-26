@@ -7,6 +7,10 @@ import numpy as np
 import holoviews as hv
 hv.extension('bokeh', inline=True)
 
+## TODO: Option to force plots to have equal axes sizes on initialisation.
+## ^^ Not sure this is possible nicely within Bokeh. You can set data_aspect, but that
+## has awkward effects with panel's stretch sizing.
+
 class HvPoints(Block):
     """The Points element visualizes as markers placed in a space of two independent variables."""
 
@@ -24,7 +28,7 @@ class HvPoints(Block):
 
     @param.depends('in_df', 'x_sel', 'y_sel')
     def _produce_plot(self):
-        if None not in (self.in_df, self.x_sel, self.y_sel):
+        if None not in (self.x_sel, self.y_sel):
             return hv.Points(self.in_df, kdims=[self.x_sel, self.y_sel])
 
         else:
@@ -59,9 +63,10 @@ class HvPointsSelect(Block):
 
     def __init__(self, block_pause_execution=True, *args, **kwargs):
         super().__init__(
+            *args,
             block_pause_execution=block_pause_execution,
             continue_label='Continue With Selection',
-            *args, **kwargs,
+            **kwargs,
         )
         
         self.hv_pane = pn.pane.HoloViews(sizing_mode='stretch_width', min_height=600)

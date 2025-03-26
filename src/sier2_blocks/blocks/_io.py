@@ -58,24 +58,6 @@ class LoadDataFrame(Block):
         )
         return pn.Column(self.i_if, i_hr)
 
-# TODO: Faker block to generate testing values
-# Consider storing these blocks in a different dir
-class StaticDataFrame(Block):
-    """ Import static data frame for testing dags.
-
-    """
-
-    out_df = param.DataFrame()
-
-    def execute(self):
-        self.out_df = pd.DataFrame(data = {
-            "calories": [420, 380, 390],
-            "duration": [50, 40, 45],
-            "Latitude": [0, 45, 70],
-            "Longitude": [15, 30, 60],
-            "Name": ['a', 'b', 'c'],
-        })
-
 class SaveDataFrame(Block):
     """ Save a dataframe to a csv or xlsx.   
     """
