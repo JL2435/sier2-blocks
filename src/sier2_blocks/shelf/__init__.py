@@ -14,13 +14,6 @@ def blocks() -> list[Info]:
 
         Info('sier2_blocks.blocks.StaticDataFrame', 'Static test dataframe'),
         Info('sier2_blocks.blocks.FakerData', 'Generate realistic fake data of various types'),
-
-        Info('sier2_blocks.blocks.geo.ReadGeoPoints', 'Spatialize a data frame'),
-        Info('sier2_blocks.blocks.geo.GeoPoints', 'Geoviews Points chart'),
-        Info('sier2_blocks.blocks.geo.GeoPointsSelect', 'Geoviews Points chart that passes on selections'),
-        
-        Info('sier2_blocks.blocks.datamap.RunUMAP', 'Run data through UMAP to reduce dimensionality.'),
-        Info('sier2_blocks.blocks.datamap.ThisNotThat', 'Show a ThisNotThat interactive plot.'),
     ]
 
 def dags() -> list[Info]:
@@ -31,10 +24,4 @@ def dags() -> list[Info]:
         Info('sier2_blocks.dags._dags.hv_points', 'Load and plot a dataframe as points'),
         Info('sier2_blocks.dags._dags.hv_hist', 'Load a dataframe and plot a histogram'),
         Info('sier2_blocks.dags._dags.faker_view', 'Load and display fake data'),
-
-        # geo
-        Info('sier2_blocks.dags.geo.geo_points', 'Load and plot a dataframe as geo points'),
-        
-        # datamap
-        Info('sier2_blocks.dags.datamap.datamap', 'Load a dataframe and make a datamap'),
     ]
