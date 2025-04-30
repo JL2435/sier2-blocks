@@ -1,7 +1,7 @@
-from ..blocks._io import LoadDataFrame, SaveDataFrame
-from ..blocks._view import SimpleTable, SimpleTableSelect
-from ..blocks._holoviews import HvPoints, HvPointsSelect, HvHist
-from ..blocks._test_data import StaticDataFrame, FakerData
+from ..blocks.io import LoadDataFrame, SaveDataFrame
+from ..blocks.view import SimpleTable, SimpleTableSelect
+from ..blocks.holoviews import HvPoints, HvPointsSelect, HvHist
+from ..blocks.test_data import StaticDataFrame, FakerData
 
 from sier2 import Connection
 from sier2.panel import PanelDag

@@ -1,9 +1,10 @@
 [project]
 name = "sier2-blocks"
-version = "0.6"
+version = "0.9"
 description = "Blocks for sier2"
 authors = [
-    {name="Algol60", email="algol60 <algol60@users.noreply.github.com>"}
+    {name="Algol60", email="algol60 <algol60@users.noreply.github.com>"},
+    {name="jacobgolding", email="jacobgolding <jacobgolding@users.noreply.github.com>"}
 ]
 readme = "README.rst"
 packages = [{include = "sier2_blocks", from = "src"}]
@@ -18,23 +19,25 @@ classifiers = [
 
 [dependencies]
 python = "^3.11"
-
-holoviews = "^1.19.0"
 panel = ">=1.4.4"
 param = ">=2.1.0"
+sier2=">=0.35"
 
-sier2=">=0.28"
+[project.optional-dependencies]
+faker = ["faker"]
+vis = ["holoviews^1.19.0"]
+all = [
+    "faker",
+    "holoviews^1.19.0",
+]
 
 [tool.poetry.plugins."sier2.library"]
 export = "sier2_blocks.shelf"
 
 [[tool.mypy.overrides]]
 module = [
-    "holoviews",
     "param",
-    "geoviews",
     "xlsxwriter",
-    "Faker",
 ]
 ignore_missing_imports = true
 

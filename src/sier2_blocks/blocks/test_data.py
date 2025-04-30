@@ -22,11 +22,11 @@ class StaticDataFrame(Block):
 
     def execute(self):
         self.out_df = pd.DataFrame(data = {
-            "calories": [420, 380, 390],
-            "duration": [50, 40, 45],
-            "Latitude": [0, 45, 70],
-            "Longitude": [15, 30, 60],
-            "Name": ['a', 'b', 'c'],
+            "calories": [420, 380, 390, None],
+            "duration": [50, 40, 45, None],
+            "Latitude": [0, 45, 70, None],
+            "Longitude": [15, 30, 60, None],
+            "Name": ['a', 'b', 'c', None],
         })
 
 class FakerData(Block):
