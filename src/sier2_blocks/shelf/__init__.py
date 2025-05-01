@@ -14,6 +14,9 @@ def blocks() -> list[Info]:
 
         Info('sier2_blocks.blocks.test_data:StaticDataFrame', 'Static test dataframe'),
         Info('sier2_blocks.blocks.test_data:FakerData', 'Generate realistic fake data of various types'),
+
+        Info('sier2_blocks.blocks.list_helper:StringToList', 'Convert an input string into a python list'),
+        Info('sier2_blocks.blocks.list_helper:ListToCopyable', 'Convert an input list into a delimited list'),
     ]
 
 def dags() -> list[Info]:
@@ -24,4 +27,5 @@ def dags() -> list[Info]:
         Info('sier2_blocks.dags.examples:hv_points', 'Load and plot a dataframe as points'),
         Info('sier2_blocks.dags.examples:hv_hist', 'Load a dataframe and plot a histogram'),
         Info('sier2_blocks.dags.examples:faker_view', 'Load and display fake data'),
+        Info('sier2_blocks.dags.examples:list_input_output', 'Example of list input/output blocks'),
     ]

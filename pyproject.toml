@@ -1,6 +1,6 @@
 [project]
 name = "sier2-blocks"
-version = "0.9"
+version = "0.10"
 description = "Blocks for sier2"
 authors = [
     {name="Algol60", email="algol60 <algol60@users.noreply.github.com>"},

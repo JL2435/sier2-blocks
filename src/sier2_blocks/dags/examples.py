@@ -2,6 +2,7 @@ from ..blocks.io import LoadDataFrame, SaveDataFrame
 from ..blocks.view import SimpleTable, SimpleTableSelect
 from ..blocks.holoviews import HvPoints, HvPointsSelect, HvHist
 from ..blocks.test_data import StaticDataFrame, FakerData
+from ..blocks.list_helper import StringToList, ListToCopyable
 
 from sier2 import Connection
 from sier2.panel import PanelDag
@@ -113,5 +114,17 @@ def save_csv():
     dag = PanelDag(doc=DOC, title='Table')
     dag.connect(sdf, st, Connection('out_df', 'in_df'))
     dag.connect(st, edf, Connection('out_df', 'in_df'))
+
+    return dag
+
+def list_input_output():
+    """Load a list froma delimited string, and return it with the option to change the delimiter"""
+    stl = StringToList(name='String Input')
+    ltc = ListToCopyable(name='Output String')
+
+    DOC = """# List Input Output example"""
+
+    dag = PanelDag(doc=DOC, title='List Example')
+    dag.connect(stl, ltc, Connection('out_list', 'in_list'))
 
     return dag
