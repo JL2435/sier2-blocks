@@ -7,6 +7,8 @@ def blocks() -> list[Info]:
         
         Info('sier2_blocks.blocks.view:SimpleTable', 'Display a simple table'),
         Info('sier2_blocks.blocks.view:SimpleTableSelect', 'Display a simple table and pass selections on'),
+        Info('sier2_blocks.blocks.view:PerspectiveTable', 'Display a table in an interactive viewer'),
+        Info('sier2_blocks.blocks.view:MultiPerspectiveTable', 'Display multiple tables in an interactive viewer'),
 
         Info('sier2_blocks.blocks.holoviews:HvPoints', 'A Holoviews Points chart'),
         Info('sier2_blocks.blocks.holoviews:HvPointsSelect', 'A Holoviews Points chart that passes on selections'),
@@ -22,7 +24,8 @@ def blocks() -> list[Info]:
 def dags() -> list[Info]:
     return [
         Info('sier2_blocks.dags.examples:table_view', 'Load a dataframe from file and display in a panel table'),
-        Info('sier2_blocks.dags.examples:static_view', 'Load a static dataframe and display in a panel table'),
+        Info('sier2_blocks.dags.examples:static_view', 'Load a static example dataframe and display in an interactive view'),
+        Info('sier2_blocks.dags.examples:perspective_view', 'Load a dataframe from file and display in a panel table'),
         Info('sier2_blocks.dags.examples:save_csv', 'Load and export a dataframe'),
         Info('sier2_blocks.dags.examples:hv_points', 'Load and plot a dataframe as points'),
         Info('sier2_blocks.dags.examples:hv_hist', 'Load a dataframe and plot a histogram'),

@@ -1,11 +1,12 @@
 from ..blocks.io import LoadDataFrame, SaveDataFrame
-from ..blocks.view import SimpleTable, SimpleTableSelect
+from ..blocks.view import SimpleTable, SimpleTableSelect, PerspectiveTable
 from ..blocks.holoviews import HvPoints, HvPointsSelect, HvHist
 from ..blocks.test_data import StaticDataFrame, FakerData
 from ..blocks.list_helper import StringToList, ListToCopyable
 
 from sier2 import Connection
 from sier2.panel import PanelDag
+import panel as pn
 
 
 def hv_points():
@@ -97,6 +98,24 @@ def static_view():
     dag = PanelDag(doc=DOC, title='Table')
     dag.connect(sdf, st, Connection('out_df', 'in_df'))
     dag.connect(st, sel_st, Connection('out_df', 'in_df'))
+
+    return dag
+
+def perspective_view():
+    """Load a static example dataframe and display in an interactive view."""
+
+    pn.extension('perspective')
+
+    ldf = LoadDataFrame(name='Load DataFrame')
+    pt = PerspectiveTable(name='View Table')
+
+    DOC = '''# Perspective table viewer
+
+    Load a dataframe and display the data as a table interactively.
+    '''
+
+    dag = PanelDag(doc=DOC, title='Perspective')
+    dag.connect(ldf, pt, Connection('out_df', 'in_df'))
 
     return dag
 

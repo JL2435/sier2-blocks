@@ -8,7 +8,6 @@ class SimpleTable(Block):
 
     Make a tabulator to display an input table.
     """
-
     in_df = param.DataFrame(doc='Input pandas dataframe')
     out_df = param.DataFrame(doc='Output pandas dataframe', default=pd.DataFrame())
 
@@ -28,7 +27,6 @@ class SimpleTableSelect(Block):
     Make a tabulator to display an input table.
     Pass on selections as an output.
     """
-
     in_df = param.DataFrame(doc='Input pandas dataframe')
     out_df = param.DataFrame(doc='Output pandas dataframe')
 
@@ -47,3 +45,58 @@ class SimpleTableSelect(Block):
 
     def __panel__(self):
         return self.tabulator
+
+class PerspectiveTable(Block):
+    """Perspective Table Viewer
+
+    Display a table in an interactive viewer.
+    """
+    in_df = param.DataFrame(doc='Input pandas dataframe')
+    in_columns_config = param.Dict(doc='Config to pass to Perspective, a dictionary of {column:config}')
+    
+    out_df = param.DataFrame(doc='Output pandas dataframe', default=pd.DataFrame())
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.perspective = pn.Row()
+
+    def execute(self):
+        self.out_df = self.in_df
+        self.perspective.clear()
+        
+        self.perspective.append(pn.pane.Perspective(
+            self.in_df, 
+            theme='pro-dark', 
+            sizing_mode='stretch_both', 
+            min_height=720, 
+            columns_config=self.in_columns_config,
+        ))
+        
+    def __panel__(self):
+        return self.perspective
+
+class MultiPerspectiveTable(Block):
+    """View tables
+    Takes a dictionary of {name: dataframe} and displays them each in a tab containing a Perspective view."""
+    
+    in_data = param.Dict(doc='Tables to view')
+    in_columns_config = param.Dict(doc='Config to pass to Perspective, a dictionary of {column:config}')
+    
+    table_tabs = pn.Tabs()
+
+    @param.depends('in_data', watch=True)
+    def _on_data_update(self):
+        self.table_tabs.clear()
+
+        for name, data in self.in_data.items():
+            data_view = pn.pane.Perspective(
+                data, 
+                theme='solarized-dark', 
+                sizing_mode='stretch_both', 
+                min_height=720, 
+                columns_config=self.in_columns_config,
+            )
+            self.table_tabs.append((name, data_view))
+
+    def __panel__(self):
+        return self.table_tabs
