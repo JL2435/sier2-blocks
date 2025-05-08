@@ -70,6 +70,7 @@ class PerspectiveTable(Block):
             sizing_mode='stretch_both', 
             min_height=720, 
             columns_config=self.in_columns_config,
+            editable=False,
         ))
         
     def __panel__(self):
