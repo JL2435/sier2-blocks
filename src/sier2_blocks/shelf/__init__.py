@@ -25,7 +25,8 @@ def dags() -> list[Info]:
     return [
         Info('sier2_blocks.dags.examples:table_view', 'Load a dataframe from file and display in a panel table'),
         Info('sier2_blocks.dags.examples:static_view', 'Load a static example dataframe and display in an interactive view'),
-        Info('sier2_blocks.dags.examples:perspective_view', 'Load a dataframe from file and display in a panel table'),
+        Info('sier2_blocks.dags.examples:perspective_view', 'Load a dataframe from file and display in a perspective table'),
+        Info('sier2_blocks.dags.examples:perspective_edit', 'Load a dataframe from file and edit in a perspective table'),
         Info('sier2_blocks.dags.examples:save_csv', 'Load and export a dataframe'),
         Info('sier2_blocks.dags.examples:hv_points', 'Load and plot a dataframe as points'),
         Info('sier2_blocks.dags.examples:hv_hist', 'Load a dataframe and plot a histogram'),
