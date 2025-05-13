@@ -25,7 +25,8 @@ class LoadDataFrame(Block):
     in_header_row = param.Integer(label='Header row', default=0)
     out_df = param.DataFrame()
 
-    def __init__(self, *args, block_pause_execution=True, **kwargs):
+    def __init__(self, *args, block_pause_execution=True, show_header_option=True, **kwargs):
+        # show_header_option = False will hide the option to select the header row.
         super().__init__(*args, block_pause_execution=block_pause_execution, **kwargs)
 
         self.i_if = pn.widgets.FileInput.from_param(
@@ -33,6 +34,7 @@ class LoadDataFrame(Block):
             accept='.csv,.xlsx,.xls',
             multiple=False
         )
+        self.show_header_option = show_header_option
 
     def execute(self):
         pn.state.notifications.info('Reading file', duration=5_000)
@@ -49,14 +51,19 @@ class LoadDataFrame(Block):
             #TODO: add feature to logger to send logs to Dag developer
 
     def __panel__(self):
-        i_hr = pn.Param(
-            self,
-            parameters=['in_header_row'],
-            widgets={
-                'in_header_row': pn.widgets.IntInput
-            }
-        )
-        return pn.Column(self.i_if, i_hr)
+        out = pn.Column(self.i_if)
+        if self.show_header_option:
+            out.append(
+                pn.Param(
+                    self,
+                    parameters=['in_header_row'],
+                    widgets={
+                        'in_header_row': pn.widgets.IntInput
+                    },
+                    name='',
+                )
+            )
+        return out
 
 class SaveDataFrame(Block):
     """ Save a dataframe to a csv or xlsx.   
