@@ -1,17 +1,23 @@
-from ..blocks.io import LoadDataFrame, SaveDataFrame
-from ..blocks.view import SimpleTable, SimpleTableSelect, PerspectiveTable
-from ..blocks.holoviews import HvPoints, HvPointsSelect, HvHist
-from ..blocks.test_data import StaticDataFrame, FakerData
-from ..blocks.list_helper import StringToList, ListToCopyable
+# from ..blocks.io import LoadDataFrame, SaveDataFrame
+# from ..blocks.view import SimpleTable, SimpleTableSelect, PerspectiveTable
+# from ..blocks.holoviews import HvPoints, HvPointsSelect, HvHist
+# from ..blocks.test_data import StaticDataFrame, FakerData
+# from ..blocks.list_helper import StringToList, ListToCopyable
 
 from sier2 import Connection
 from sier2.panel import PanelDag
 import panel as pn
 
+# Blocks are imported inside dags so that users can run examples without all 
+# of the modules imported.
 
 def hv_points():
     """Load a dataframe from a file and display a Points chart."""
-
+    
+    from ..blocks.io import LoadDataFrame
+    from ..blocks.holoviews import HvPointsSelect
+    from ..blocks.view import SimpleTable
+    
     ldf = LoadDataFrame(name='Load DataFrame')
     hps = HvPointsSelect(name='Plot Points')
     st = SimpleTable(name='View Selection')
@@ -33,6 +39,9 @@ def hv_points():
 
 def hv_hist():
     """Load a dataframe from a file and display a Histogram."""
+    
+    from ..blocks.io import LoadDataFrame
+    from ..blocks.holoviews import HvHist
 
     ldf = LoadDataFrame(name='Load DataFrame')
     hh = HvHist(name='Plot Histogram')
@@ -52,6 +61,9 @@ def hv_hist():
 def table_view():
     """Load a dataframe from file and display in a panel table."""
 
+    from ..blocks.io import LoadDataFrame
+    from ..blocks.view import SimpleTable, SimpleTableSelect
+
     ldf = LoadDataFrame(name='Load DataFrame')
     st = SimpleTableSelect(name='View Table')
     sel_st = SimpleTable(name='Selection')
@@ -70,6 +82,9 @@ def table_view():
 def faker_view():
     """Load and display fake data."""
 
+    from ..blocks.test_data import FakerData
+    from ..blocks.view import SimpleTable
+
     fdf = FakerData(name='Fake Data')
     st = SimpleTable(name='Display')
 
@@ -85,6 +100,9 @@ def faker_view():
 
 def static_view():
     """Load a static example dataframe and display in a table."""
+
+    from ..blocks.test_data import StaticDataFrame
+    from ..blocks.view import SimpleTable, SimpleTableSelect
 
     sdf = StaticDataFrame(name='Load DataFrame')
     st = SimpleTableSelect(name='View Table')
@@ -104,7 +122,8 @@ def static_view():
 def perspective_view():
     """Load a static example dataframe and display in an interactive view."""
 
-    pn.extension('perspective')
+    from ..blocks.io import LoadDataFrame
+    from ..blocks.view import PerspectiveTable
 
     ldf = LoadDataFrame(name='Load DataFrame')
     pt = PerspectiveTable(name='View Table')
@@ -121,6 +140,11 @@ def perspective_view():
 
 def save_csv():
     """Load a dataframe from file and download."""
+
+    from ..blocks.test_data import StaticDataFrame
+    from ..blocks.view import SimpleTableSelect
+    from ..blocks.io import SaveDataFrame
+    
     sdf = StaticDataFrame(name='Load DataFrame')
     st = SimpleTableSelect(name='View Table')
     edf = SaveDataFrame(name='Export')
@@ -138,6 +162,9 @@ def save_csv():
 
 def list_input_output():
     """Load a list froma delimited string, and return it with the option to change the delimiter"""
+
+    from ..blocks.list_helper import StringToList, ListToCopyable
+    
     stl = StringToList(name='String Input')
     ltc = ListToCopyable(name='Output String')
 
