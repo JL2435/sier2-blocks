@@ -1,6 +1,7 @@
 from sier2 import Block
 import panel as pn
 import param
+import time
 
 DELIMITERS = {
     'comma': ',',
@@ -22,8 +23,16 @@ class StringToList(Block):
 
     def __init__(self, *args, block_pause_execution=True, **kwargs):
         super().__init__(*args, block_pause_execution=block_pause_execution, **kwargs)
-
+        
     def execute(self):
+        # We need a small sleep in here.
+        # The TextAreaInput widget has two params, input_value, and value.
+        # input_value updates live as the user changes things, value is propagated only when they click away.
+        # If we do not sleep, it's possible that value hasn't had the chance to update yet if the user
+        # has gone straight from the text input to clicking on the button.
+        #
+        time.sleep(1)
+        
         delimiter = DELIMITERS[self.in_delimiter]
         self.out_list = self.in_str.split(delimiter)
 
@@ -43,7 +52,7 @@ class StringToList(Block):
                     'name': 'List delimiter',
                 },
             },
-        )
+        )#self.panel_view
 
 class ListToCopyable(Block):
     """Join a python list with a specified delimiter.
@@ -54,7 +63,7 @@ class ListToCopyable(Block):
     in_delimiter = param.ObjectSelector(doc='Delimiter for output', objects=list(DELIMITERS.keys()), default=list(DELIMITERS.keys())[0])
 
     def execute(self):
-        print(self.in_list)
+        # print(self.in_list)
         pass
 
     @param.depends('in_delimiter', 'in_list')
