@@ -3,11 +3,15 @@ import pandas as pd
 import panel as pn
 from sier2 import Block
 
+
 class SimpleTable(Block):
     """ Simple Table Viewer
 
     Make a tabulator to display an input table.
     """
+    
+    pn.extension('tabulator')
+    
     in_df = param.DataFrame(doc='Input pandas dataframe')
     out_df = param.DataFrame(doc='Output pandas dataframe', default=pd.DataFrame())
 
@@ -27,6 +31,9 @@ class SimpleTableSelect(Block):
     Make a tabulator to display an input table.
     Pass on selections as an output.
     """
+    
+    pn.extension('tabulator')
+    
     in_df = param.DataFrame(doc='Input pandas dataframe')
     out_df = param.DataFrame(doc='Output pandas dataframe')
 
@@ -34,11 +41,11 @@ class SimpleTableSelect(Block):
         super().__init__(*args, block_pause_execution=block_pause_execution, continue_label='Continue With Selection', **kwargs)
         self.tabulator = pn.widgets.Tabulator(pd.DataFrame(), name='DataFrame', page_size=20, pagination='local')
 
-    # def prepare(self):
-    #     if self.in_df is not None:
-    #         self.tabulator.value = self.in_df
-    #     else:
-    #         self.tabulator.value = pd.DataFrame()
+    def prepare(self):
+        if self.in_df is not None:
+            self.tabulator.value = self.in_df
+        else:
+            self.tabulator.value = pd.DataFrame()
 
     def execute(self):
         self.out_df = self.tabulator.selected_dataframe
@@ -51,6 +58,9 @@ class PerspectiveTable(Block):
 
     Display a table in an interactive viewer.
     """
+    
+    pn.extension('perspective')
+    
     in_df = param.DataFrame(doc='Input pandas dataframe')
     in_columns_config = param.Dict(doc='Config to pass to Perspective, a dictionary of {column:config}')
     
@@ -66,7 +76,7 @@ class PerspectiveTable(Block):
         
         self.perspective.append(pn.pane.Perspective(
             self.in_df, 
-            theme='pro-dark', 
+            # theme='pro-dark', 
             sizing_mode='stretch_both', 
             min_height=720, 
             columns_config=self.in_columns_config,
@@ -78,8 +88,11 @@ class PerspectiveTable(Block):
 
 class MultiPerspectiveTable(Block):
     """View tables
-    Takes a dictionary of {name: dataframe} and displays them each in a tab containing a Perspective view."""
     
+    Takes a dictionary of {name: dataframe} and displays them each in a tab containing a Perspective view.
+    """
+    
+    pn.extension('perspective')
     in_data = param.Dict(doc='Tables to view')
     in_columns_config = param.Dict(doc='Config to pass to Perspective, a dictionary of {column:config}')
     
