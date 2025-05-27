@@ -12,6 +12,7 @@ A block is implemented as:
 
 The ``Block`` class inherits from ``param.Parameterized``, and uses parameters as described at https://param.holoviz.org/user_guide/Parameters.html.
 There are three kinds of parameters:
+
     * Input parameters start with ``in_``. These parameters are set before a block is executed.
     * Output parameters start with ``out_``. The block sets these in its ``execute()`` method.
     * Block parameters start with ``block_``. These are reserved for use by blocks.
