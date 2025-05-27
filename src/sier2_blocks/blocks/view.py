@@ -13,16 +13,28 @@ class SimpleTable(Block):
     pn.extension('tabulator')
     
     in_df = param.DataFrame(doc='Input pandas dataframe')
+    in_tabulator_kwargs = param.Dict(doc='Keyword arguments passed to the tabulator display', default=dict())
+    
     out_df = param.DataFrame(doc='Output pandas dataframe', default=pd.DataFrame())
 
     def execute(self):
         self.out_df = self.in_df
 
     def __panel__(self):
+        # Build a dictionary of arguments for the tabulator.
+        # These defaults will be overriden by in_tabulator_kwargs.
+        #
+        display_dict = {
+            'type': pn.widgets.Tabulator, 
+            'page_size':20, 
+            'pagination':'local', 
+            'name':'DataFrame',
+        }
+        display_dict.update(self.in_tabulator_kwargs)
         return pn.Param(
             self,
             parameters=['out_df'],
-            widgets={'out_df': {'type': pn.widgets.Tabulator, 'page_size':20, 'pagination':'local', 'name':'DataFrame'}}
+            widgets={'out_df': display_dict}
         )
 
 class SimpleTableSelect(Block):
