@@ -69,6 +69,7 @@ class PerspectiveTable(Block):
     """Perspective Table Viewer
 
     Display a table in an interactive viewer.
+    If block_pause_execution is set, then the table will be editable and pass on the edited version.
     """
     
     pn.extension('perspective')
@@ -78,25 +79,38 @@ class PerspectiveTable(Block):
     
     out_df = param.DataFrame(doc='Output pandas dataframe', default=pd.DataFrame())
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.perspective = pn.Row()
+    def __init__(self, *args, block_pause_execution=False, **kwargs):
+        super().__init__(*args, block_pause_execution=block_pause_execution, **kwargs)
 
-    def execute(self):
-        self.out_df = self.in_df
-        self.perspective.clear()
+        self.editable = block_pause_execution
+
+        # We don't want to build the perspective until after we have the data,
+        # otherwise it won't have any columns loaded in.
+        # Instead we have an empty row that we put the perspective into.
+        #
+        self._perspective = pn.Row()
+        self.perspective = pn.Row()
         
-        self.perspective.append(pn.pane.Perspective(
+    def prepare(self):
+        print('Preparing')
+        self._perspective.clear()
+
+        self.perspective = pn.pane.Perspective(
             self.in_df, 
             # theme='pro-dark', 
             sizing_mode='stretch_both', 
             min_height=720, 
             columns_config=self.in_columns_config,
-            editable=False,
-        ))
+            editable=self.editable,
+        )
+        
+        self._perspective.append(self.perspective)
+
+    def execute(self):
+        self.out_df = self.perspective.object
         
     def __panel__(self):
-        return self.perspective
+        return self._perspective
 
 class MultiPerspectiveTable(Block):
     """View tables

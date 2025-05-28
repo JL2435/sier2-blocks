@@ -120,7 +120,7 @@ def static_view():
     return dag
 
 def perspective_view():
-    """Load a static example dataframe and display in an interactive view."""
+    """Load a dataframe and display in an interactive view."""
 
     from ..blocks.io import LoadDataFrame
     from ..blocks.view import PerspectiveTable
@@ -135,6 +135,26 @@ def perspective_view():
 
     dag = PanelDag(doc=DOC, title='Perspective')
     dag.connect(ldf, pt, Connection('out_df', 'in_df'))
+
+    return dag
+
+def perspective_edit():
+    """Load a dataframe and display in an interactive view, passing edits downstream."""
+
+    pn.extension('perspective')
+
+    ldf = LoadDataFrame(name='Load DataFrame')
+    pt = PerspectiveTable(name='View Table', block_pause_execution=True)
+    st = SimpleTable(name='Selection')
+
+    DOC = '''# Perspective table viewer
+
+    Load a dataframe and display the data as a table interactively.
+    '''
+
+    dag = PanelDag(doc=DOC, title='Perspective')
+    dag.connect(ldf, pt, Connection('out_df', 'in_df'))
+    dag.connect(pt, st, Connection('out_df', 'in_df'))
 
     return dag
 
