@@ -114,29 +114,31 @@ class PerspectiveTable(Block):
 
 class MultiPerspectiveTable(Block):
     """View tables
+    Takes a dictionary of {name: dataframe} and displays them each in a tab containing a Perspective view."""
     
-    Takes a dictionary of {name: dataframe} and displays them each in a tab containing a Perspective view.
-    """
-    
-    pn.extension('perspective')
     in_data = param.Dict(doc='Tables to view')
-    in_columns_config = param.Dict(doc='Config to pass to Perspective, a dictionary of {column:config}')
+    table_tabs = pn.Tabs(sizing_mode='stretch_width', closable=True)
     
-    table_tabs = pn.Tabs()
-
-    @param.depends('in_data', watch=True)
-    def _on_data_update(self):
-        self.table_tabs.clear()
-
+    def execute(self):
+        
         for name, data in self.in_data.items():
-            data_view = pn.pane.Perspective(
-                data, 
-                theme='solarized-dark', 
-                sizing_mode='stretch_both', 
-                min_height=720, 
-                columns_config=self.in_columns_config,
-            )
-            self.table_tabs.append((name, data_view))
-
+            if name not in self.table_tabs._names:
+                
+                # get columns with more than 10% rows populated
+                if not data.empty:
+                    col_summary = data.describe(include='all').T[['count']]
+                    select_columns = list(col_summary[col_summary['count'] >= (0.1 * col_summary['count'].max())].index)
+                    
+                    # pn.pane.Perspective does not support data structures or booleans so we have to remove everything from any list, dicts, sets, tuple's and boolean objects and put as a string
+                    # 
+                    data = data.map(lambda x: str(x) if isinstance(x, (list, tuple, set, dict, bool)) else x)
+                    data_view = pn.pane.Perspective(
+                        data,
+                        sizing_mode='stretch_width', 
+                        min_height=600, 
+                        columns=select_columns,
+                    )
+                    self.table_tabs.append((name, data_view))
+        
     def __panel__(self):
         return self.table_tabs
