@@ -210,3 +210,37 @@ class SaveDataFrame(Block):
             pn.Row(self.csvdl, self.xlsxdl),
         )
 
+
+class LoadJsonFile(Block):
+    """ GUI import from json file.
+
+    """
+
+    # Unfortunately, file selection in Panel is dodgy.
+    # We need to use a FileInput widget, which uploads the file as a bytes object.
+    #
+    in_file = param.Bytes(label='Input File', doc='Bytes object of the input file.')
+    out_dict = param.Dict(doc='Output Dictionary', default={})
+    
+    def __init__(self, *args, block_pause_execution=True, **kwargs):
+        super().__init__(*args, block_pause_execution=block_pause_execution, **kwargs)
+
+        self.i_if = pn.widgets.FileInput.from_param(
+            self.param.in_file,
+            accept='.json',
+            multiple=False
+        )
+            
+    def execute(self):
+        pn.state.notifications.info('Reading file', duration=5_000)
+        try:
+            if self.i_if.filename.endswith('.json'):
+                self.out_dict = json.load(StringIO(self.in_file.decode('utf-8')))
+                
+        except Exception as e:
+            pn.state.notifications.error(f'Error reading {self.i_if.filename}. Check sidebar logs for more information.', duration=10_000)
+            self.logger.error(str(e))
+            #TODO: add feature to logger to send logs to Dag developer
+
+    def __panel__(self):
+        return pn.Column(self.i_if)
